@@ -154,7 +154,7 @@ static int ft_conversion(const char type, va_list ap)
 	return(-1);
 }
 
-int	ft_printf(char const *s, ...)
+int	ft_printf(const char *s, ...)
 {
 	int i = 0;
 	int len;
