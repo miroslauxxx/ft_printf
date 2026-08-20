@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include <unistd.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -28,6 +29,11 @@ int		ft_strlen(char *s)
 	while(*s)
 		s++;
 	return(s - ss);
+}
+
+int ft_putchar(char c)
+{
+	return(write(FD, &c, 1));
 }
 
 int		ft_hexlen(long n)
@@ -135,6 +141,50 @@ int		ft_putnbr_hex(long n, int isx)
 	return(0);
 }
 
+static int ft_conversion(const char type, va_list ap)
+{
+	if(type == 'c')
+		return(ft_putchar(va_arg(ap, int)));
+	else if(type == 'd' || type == 'i')
+		return(ft_putnbr(va_arg(ap, int)));
+	else if(type == 'x')
+		return(ft_putnbr_hex(va_arg(ap, long), 0));
+	else if(type == 'X')
+		return(ft_putnbr_hex(va_arg(ap, long), 1));
+	return(-1);
+}
+
+int	ft_printf(char const *s, ...)
+{
+	int i = 0;
+	int len;
+	int check;
+	
+	va_list  ap;
+	len = 0;
+	va_start(ap, s);
+	while(s[i] != '\0')
+	{
+		if(s[i] == '%')
+		{
+			check = ft_conversion(s[++i], ap);
+			if(check == -1)
+				return(-1);
+			len += check;
+		}
+		else
+		{
+			if(write(FD, &s[i], 1) == -1)
+				return(-1);
+			len++;
+		}
+		i++;
+	}
+	va_end(ap);
+	return(1);
+}
+
 int	main(void)
 {
+	ft_printf("\t%x\t", 41099);
 }
