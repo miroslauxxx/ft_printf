@@ -7,8 +7,9 @@
 
 int		ft_numlen(long n)
 {
-	int			len = 1;
+	int			len;
 	
+	len = 1;
 	if(n < 0)
 	{
 		n *= -1;
@@ -48,7 +49,6 @@ int		ft_hexlen(long n)
 		n = -n;
 		i++;
 	}
-
 	while(power - n < 0)
 	{
 		power *= 16;
@@ -88,12 +88,9 @@ int		ft_putnbr(long n)
 	string = malloc(len +1);
 	if (!string)
 		return(-1);
-	if(n == -2147483648)
-		return(free(string), ft_putstr("-2147483648"));
 	if(n < 0)
 	{
 		n *= -1;
-		len++;
 		string[0] = '-';
 	}
 	string[len] = 0;
@@ -104,26 +101,23 @@ int		ft_putnbr(long n)
 		n /= 10;
 	}
 	string[len] = n + 48;
+	len = ft_strlen(string); 
 	ft_putstr(string);
-	len = ft_strlen(string);
-	return(free(string), ft_numlen(n));
+	return(free(string), len);
 }
 
-int		ft_putnbr_hex(long n, int isx)
+int		ft_putnbr_hex(unsigned long n, int isx)
 {
 	int 		mod;
 	char 		*string;
-	int			len = ft_hexlen(n); 
+	int			init_len;// = ft_hexlen(n);
+	int 		len;// = ft_hexlen(n); 
 
-	string = malloc(len + 1);
+	init_len = ft_hexlen(n);
+	len = ft_hexlen(n);
+	string = malloc(len);
 	if (!string)
 		return(-1);
-	if(n < 0)
-	{
-		string[0] = '-';
-		n = -n;
-	}
-	string[len] = 0;
 	len -= 1;
 	while(n != 0)
 	{
@@ -138,7 +132,20 @@ int		ft_putnbr_hex(long n, int isx)
 	}
 	ft_putstr(string);
 	free(string);
-	return(0);
+	return(init_len);
+}
+
+int ft_putptr(void *ptr)
+{
+	int acc = 0;
+	int len = 0;
+
+	if(ft_putstr("0x") == -1)
+		return(-1);
+	acc = ft_putnbr_hex((unsigned long)ptr, 1);
+	if(acc == -1)
+		return(-1);
+	return(len + acc + 2); // 2 = 0x 
 }
 
 static int ft_conversion(const char type, va_list ap)
@@ -147,10 +154,16 @@ static int ft_conversion(const char type, va_list ap)
 		return(ft_putchar(va_arg(ap, int)));
 	else if(type == 'd' || type == 'i')
 		return(ft_putnbr(va_arg(ap, int)));
+	else if(type == 'u')
+		return(ft_putnbr(va_arg(ap, unsigned int)));
 	else if(type == 'x')
-		return(ft_putnbr_hex(va_arg(ap, long), 0));
+		return(ft_putnbr_hex(va_arg(ap, int), 1));
 	else if(type == 'X')
-		return(ft_putnbr_hex(va_arg(ap, long), 1));
+		return(ft_putnbr_hex(va_arg(ap, unsigned long), 0));
+	else if(type == 's')
+		return(ft_putstr(va_arg(ap, char *)));
+	else if(type == 'p')
+		return(ft_putptr(va_arg(ap, void *)));
 	return(-1);
 }
 
@@ -181,10 +194,42 @@ int	ft_printf(const char *s, ...)
 		i++;
 	}
 	va_end(ap);
-	return(1);
+	return(len);
 }
 
 int	main(void)
 {
-	ft_printf("\t%x\t", 41099);
+	printf("1:%d\n", ft_printf("\t%c\t\t\t", 'c'));
+	printf("1:%d\n", printf("\t%c\t\t\t", 'c'));
+
+	printf("2:%d\n", ft_printf("\t%d\t\t\t", INT_MIN));
+	printf("2:%d\n", printf("\t%d\t\t\t", INT_MIN));
+
+	printf("3:%d\n", ft_printf("\t%d\t\t\t", INT_MAX));
+	printf("3:%d\n", printf("\t%d\t\t\t", INT_MAX));
+
+	printf("4:%d\n", ft_printf("\t%d\t\t\t", 42));
+	printf("4:%d\n", printf("\t%d\t\t\t", 42));
+
+	printf("5:%d\n", ft_printf("\t%d\t\t\t", -42));
+	printf("5:%d\n", printf("\t%d\t\t\t", -42));
+
+	printf("6:%d\n", ft_printf("\t%i\t\t\t", 0));
+	printf("6:%d\n", printf("\t%i\t\t\t", 0));
+
+	printf("7:%d\n", ft_printf("\t%u\t\t\t", INT_MIN));
+	printf("7:%d\n", printf("\t%u\t\t\t", INT_MIN));
+
+	char *string = malloc(10);
+	
+	int i = 0;
+	while(i < 9)
+	{
+		string[i] = 0;
+		i++;
+	}
+	printf("8:%d\n", printf("\t%p\t\t\t", (void *)string));
+	printf("8:%d\n", ft_printf("\t%p\t\t\t", (void *)string));
+	free(string);
+	/* ft_printf("\t%X\t", 41099); */
 }
