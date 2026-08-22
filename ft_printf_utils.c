@@ -17,15 +17,6 @@ int		ft_numlen(long n)
 	return(len);
 }
 
-int		ft_strlen(char *s)
-{
-	const char 	*ss = s;
-
-	while(*s)
-		s++;
-	return(s - ss);
-}
-
 int		ft_hexlen(long n)
 {
 	long power;
