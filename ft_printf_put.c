@@ -15,7 +15,7 @@ int	ft_putstr(char *s)
 		return (write(FD, "(null)", 6));
 	string = malloc(len +1);
 	if (!string)
-		return (free(string), -1);
+		return (-1);
 	i = 0;
 	while (s[i] != 0)
 	{
@@ -34,7 +34,7 @@ int	ft_putnbr(long n)
 	char		*string;
 
 	len = ft_numlen(n);
-	string = malloc(len);
+	string = malloc(len +1);
 	if (!string)
 		return (-1);
 	if (n < 0)
@@ -63,13 +63,14 @@ int	ft_putnbr_hex(unsigned long n, int isx)
 	const int	init_len = ft_hexlen(n);
 	int			len;
 
-	len = ft_hexlen(n);
-	string = malloc(len);
-	if (!string)
-		return (-1);
-	len -= 1;
 	if (n == 0)
 		return (putchar('0'));
+	len = ft_hexlen(n);
+	string = malloc(len +1);
+	if (!string)
+		return (-1);
+	string[len] = '\0';
+	len -= 1;
 	while (n != 0)
 	{
 		mod = n % 16;
