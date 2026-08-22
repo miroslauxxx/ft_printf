@@ -2,6 +2,5 @@
 
 int	main(void)
 {
-	ft_printf("%%");
-	ft_printf("%s", "sring");
+	ft_printf("%d", 1);
 }

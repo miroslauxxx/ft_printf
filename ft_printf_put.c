@@ -6,7 +6,7 @@
 /*   By: milnicki <milnicki@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 15:15:42 by milnicki          #+#    #+#             */
-/*   Updated: 2026/08/22 15:22:25 by milnicki         ###   ########.fr       */
+/*   Updated: 2026/08/22 19:14:54 by green            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -18,52 +18,47 @@ int	ft_putchar(char c)
 
 int	ft_putstr(char *s)
 {
-	const int	len = ft_strlen(s);
-	char		*string;
-	int			i;
+	int	len;
 
 	if (!s)
 		return (write(FD, "(null)", 6));
-	string = malloc(len +1);
-	if (!string)
-		return (-1);
-	i = 0;
-	while (s[i] != 0)
+	len = 0;
+	while (*s)
 	{
-		string[i] = s[i];
-		++i;
+		write(FD, s, 1);
+		s++;
 	}
-	string[len] = '\0';
-	if (write(FD, string, len) == -1)
-		return (free(string), -1);
-	return (free(string), len);
+	return (len);
 }
 
 int	ft_putnbr(long n)
 {
-	int			len;
-	char		*string;
+	long	ln;
+	long	div;
+	char	c;
+	int		len;
 
-	len = ft_numlen(n);
-	string = malloc(len +1);
-	if (!string)
-		return (-1);
+	ln = n;
+	len = 0;
 	if (n < 0)
 	{
-		n *= -1;
-		string[0] = '-';
+		if (write(FD, "-", 1) == -1)
+			return(-1);
+		ln = -ln;
+		len++;
 	}
-	string[len] = '\0';
-	len -= 1;
-	while (n > 9)
+	div = 1;
+	while (div * 10 <= ln)
+		div *= 10;
+	while (div > 0)
 	{
-		string[len--] = n % 10 + 48;
-		n /= 10;
+		c = (ln / div) + 48;
+		write(FD, &c, 1);
+		ln %= div;
+		div /= 10;
+		len++;
 	}
-	string[len] = n + 48;
-	len = ft_strlen(string);
-	ft_putstr(string);
-	return (free(string), len);
+	return (len);
 }
 
 int	ft_putnbr_hex(unsigned long n, int isx)
@@ -76,10 +71,9 @@ int	ft_putnbr_hex(unsigned long n, int isx)
 	if (n == 0)
 		return (putchar('0'));
 	len = ft_hexlen(n);
-	string = malloc(len +1);
+	string = malloc(len);
 	if (!string)
 		return (-1);
-	string[len] = '\0';
 	len -= 1;
 	while (n != 0)
 	{
@@ -98,7 +92,7 @@ int	ft_putnbr_hex(unsigned long n, int isx)
 
 int	ft_putptr(void *ptr)
 {
-	int			acc;
+	int	acc;
 
 	acc = 0;
 	if (ptr == NULL)
