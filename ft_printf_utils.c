@@ -6,27 +6,20 @@
 /*   By: milnicki <milnicki@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 15:15:52 by milnicki          #+#    #+#             */
-/*   Updated: 2026/08/22 19:09:36 by green            ###   ########.fr       */
+/*   Updated: 2026/08/22 21:00:48 by green            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-int	ft_hexlen(long n)
+int	ft_hexlen(unsigned long n)
 {
-	long	power;
-	int		i;
+	int		len;
 
-	power = 16;
-	i = 1;
-	if (n < 0)
+	len = 1;
+	while (n >= 16)
 	{
-		n = -n;
-		i++;
+		n /= 16;
+		len++;
 	}
-	while (power - n < 0)
-	{
-		power *= 16;
-		i++;
-	}
-	return (i);
+	return (len);
 }

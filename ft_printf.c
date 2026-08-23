@@ -6,7 +6,7 @@
 /*   By: green </var/spool/mail/green>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 19:06:26 by green             #+#    #+#             */
-/*   Updated: 2026/08/22 19:07:48 by green            ###   ########.fr       */
+/*   Updated: 2026/08/22 21:02:33 by green            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -25,9 +25,9 @@ static int	ft_conversion(const char type, va_list ap)
 	else if (type == 'u')
 		return (ft_putnbr(va_arg(ap, unsigned int)));
 	else if (type == 'x')
-		return (ft_putnbr_hex(va_arg(ap, int), 1));
+		return (ft_putnbr_hex(va_arg(ap, unsigned int), 1));
 	else if (type == 'X')
-		return (ft_putnbr_hex(va_arg(ap, unsigned long), 0));
+		return (ft_putnbr_hex(va_arg(ap, unsigned int), 0));
 	else if (type == '%')
 		return (ft_putchar('%'));
 	return (-1);

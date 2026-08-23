@@ -6,7 +6,7 @@
 /*   By: milnicki <milnicki@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 15:15:42 by milnicki          #+#    #+#             */
-/*   Updated: 2026/08/22 19:14:54 by green            ###   ########.fr       */
+/*   Updated: 2026/08/23 00:12:07 by green            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -27,6 +27,7 @@ int	ft_putstr(char *s)
 	{
 		write(FD, s, 1);
 		s++;
+		len++;
 	}
 	return (len);
 }
@@ -42,8 +43,7 @@ int	ft_putnbr(long n)
 	len = 0;
 	if (n < 0)
 	{
-		if (write(FD, "-", 1) == -1)
-			return(-1);
+		write(FD, "-", 1);
 		ln = -ln;
 		len++;
 	}
@@ -65,29 +65,29 @@ int	ft_putnbr_hex(unsigned long n, int isx)
 {
 	int			mod;
 	char		*string;
-	const int	init_len = ft_hexlen(n);
+	int			i;
 	int			len;
 
 	if (n == 0)
-		return (putchar('0'));
+		return (ft_putchar('0'));
 	len = ft_hexlen(n);
-	string = malloc(len);
+	string = malloc(len +1);
 	if (!string)
 		return (-1);
-	len -= 1;
+	string[len] = '\0';
+	i = len;
 	while (n != 0)
 	{
 		mod = n % 16;
 		if (mod > 9 && isx)
-			string[len--] = mod + 87;
+			string[--i] = mod + 87;
 		else if (mod > 9)
-			string[len--] = mod + 55;
+			string[--i] = mod + 55;
 		else if (mod <= 9)
-			string[len--] = mod + 48;
+			string[--i] = mod + 48;
 		n /= 16;
 	}
-	ft_putstr(string);
-	return (free(string), init_len);
+	return (ft_putstr(string), free(string), len);
 }
 
 int	ft_putptr(void *ptr)

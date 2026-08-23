@@ -10,7 +10,7 @@ OBJ_FILES = $(SRC_FILES:.c=.o)
 
 CC = gcc
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
 all: $(NAME)
 
@@ -25,7 +25,7 @@ clean:
 	rm -rf $(OBJ_FILES)
 	@make -C $(LIBFT_DIR) clean && echo "@make -C $(LIBFT_DIR) clean"
 
-fclean:
+fclean: clean
 	rm -rf $(NAME)
 	@make -C $(LIBFT_DIR) fclean && echo "@make -C $(LIBFT_DIR) fclean"
 
