@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: green </var/spool/mail/green>              +#+  +:+       +#+        */
+/*   By: milnicki <milnicki@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/22 19:06:26 by green             #+#    #+#             */
-/*   Updated: 2026/08/22 21:02:33 by green            ###   ########.fr       */
+/*   Created: 2026/08/23 12:46:10 by milnicki          #+#    #+#             */
+/*   Updated: 2026/08/23 12:46:20 by milnicki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
-#define FD 1
 
 static int	ft_conversion(const char type, va_list ap)
 {
