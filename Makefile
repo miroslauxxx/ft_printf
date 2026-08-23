@@ -23,10 +23,16 @@ $(LIBFT):
 
 clean:
 	rm -rf $(OBJ_FILES)
-	@make -C $(LIBFT_DIR) clean && echo "@make -C $(LIBFT_DIR) clean"
+	make -C $(LIBFT_DIR) clean 
 
 fclean: clean
 	rm -rf $(NAME)
-	@make -C $(LIBFT_DIR) fclean && echo "@make -C $(LIBFT_DIR) fclean"
+	make -C $(LIBFT_DIR) fclean 
+
+tester:
+	git clone https://github.com/Tripouille/printfTester.git
+
+norm: fclean 
+	norminette
 
 re: fclean all
